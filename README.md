@@ -38,3 +38,22 @@ world backup automation using s3, lambda, ssm agent..
 1. IAM Role setup for ec2
 2. installed ssm agent... had some issue installing it tho
 3. now ec2 appears in System Manager -> fleet manager
+
+12/3/25:
+set up auto backup for minecraft world file - everyday 4 am (pst)
+
+12/6/25:
+world file didn't save to ec2. so i made new schedule. need to see if it works tomorrow
+
+12/7/25:
+didn't generate backup file. so debugging starts.
+before that, i changed payload format. created /home/ubuntu/minecraft_backup.sh and wrote codes inside. so i can just run it simply.
+found reason: ssm agent works when ec2 is running. but my ec2 stops at 2 am and starts at 10am. and i scheduled backup at 4am. that's why it didnt work.
+i was able to find this error in cloudtrail. i looked for sendcommand and clicked on it. it said invalidstate or something similiar. 
+
+12/9/25: 
+now that i figured it out and fixed it by moving backup schedule to 1am, i set up auto delete for s3 files. 
+created touch lifecycle.json .. opened it and set auto delete rule for 1 week old files
+
+12/10/25:
+looking at docker.. downloaded docker and ran some simple docker commands.
