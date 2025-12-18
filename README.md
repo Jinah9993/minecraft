@@ -67,7 +67,10 @@ other issue: timeout error
 - discord expects response in 3 sec
 - but ec2 start/stop api call is kinda slow
 - so it needed more than 3 sec. so i increased lambda timeout to 10 sec.
-ran to register slash command:
+
+  
+ran to register slash command:  
+```
 import requests
 
 command = {
@@ -88,7 +91,7 @@ response = requests.post(
     headers={"Authorization": f"Bot {TOKEN}"},
     json=command
 )
-
+```
 
 
 
