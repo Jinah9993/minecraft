@@ -57,3 +57,39 @@ created touch lifecycle.json .. opened it and set auto delete rule for 1 week ol
 
 12/10/25:
 looking at docker.. downloaded docker and ran some simple docker commands.
+
+~12/16/25:
+i was gonna try docker compose with discord bot and minecraft server, but i wanted discord bot to be able to send commands even though it's not on 24/7 (using slash command)
+to do this, i had to put invoke url to discord bot setting (interactions url something), but it kept failed.
+it was because i kept failed on downloading PyNaCl which is needed for signatrue, due to platform issue (because i was on windows and lambda is linux.. so it couldnt use window library)
+so i used docker to make same linux setting as lambda, and downloaded PyNaCl and created files for lambda layer
+other issue: timeout error
+- discord expects response in 3 sec
+- but ec2 start/stop api call is kinda slow
+- so it needed more than 3 sec. so i increased lambda timeout to 10 sec.
+ran to register slash command:
+import requests
+
+command = {
+    "name": "server",
+    "description": "Turn Minecraft server on/off",
+    "options": [{
+        "name": "action",
+        "type": 3,  # STRING
+        "choices": [
+            {"name": "on", "value": "on"},
+            {"name": "off", "value": "off"}
+        ]
+    }]
+}
+
+response = requests.post(
+    f"https://discord.com/api/v10/applications/{APP_ID}/commands",
+    headers={"Authorization": f"Bot {TOKEN}"},
+    json=command
+)
+
+
+
+
+
